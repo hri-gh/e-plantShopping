@@ -9,27 +9,48 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+    let total = 0;
+    cart.forEach(item => {
+      const itemCost = parseFloat(item.cost.substring(1)); // Convert cost string to number
+      total += item.quantity * itemCost; // Multiply quantity by cost and add to total
+    });
+    return total.toFixed(2); // Return total rounded to 2 decimal places
   };
 
   const handleContinueShopping = (e) => {
-   
+    e.preventDefault();
+    if (onContinueShopping) {
+      onContinueShopping(e); // Call the function passed as a prop
+    }
   };
 
 
 
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-   
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem({ name: item.name }));
+    }
   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem({ name: item.name })); // Dispatch action to remove item from cart
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    const itemCost = parseFloat(item.cost.substring(1)); // Convert cost string to number
+    return (item.quantity * itemCost).toFixed(2); // Return total cost rounded to 2 decimal places
+  };
+
+  const handleCheckoutShopping = (e) => {
+    e.preventDefault();
+    alert('Functionality to be added for future reference');
   };
 
   return (
